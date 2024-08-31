@@ -13,12 +13,6 @@ export interface EmptyStateProps {
   message: string;
 }
 
-export interface NotificationContextType {
-  notifications: Notification[];
-  addNotification: (notification: Notification) => void;
-  removeNotification: (index: number) => void;
-}
-
 export interface NoteFormProps {
   onSubmit: (data: Omit<Note, "id">) => void;
   onCancel: () => void;
@@ -49,10 +43,4 @@ export interface NoteItemProps {
 export interface NoteViewProps {
   note: Note;
   onClose: () => void;
-}
-
-export interface NotificationContextType {
-  notifications: Notification[];
-  addNotification: (notification: Notification) => void;
-  removeNotification: (index: number) => void;
 }
