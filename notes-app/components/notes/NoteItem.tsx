@@ -1,27 +1,40 @@
-import React from 'react'
-import { NoteItemProps } from '@/types'
+import React from 'react';
+import { Note } from '@/types';
 
+interface NoteItemProps {
+  note: Note;
+  onDelete: () => Promise<void>;
+  onView: () => void;
+}
 
-const NoteItem: React.FC<NoteItemProps> = ({ note, onEdit, onDelete }) => {
-    return (
-      <div className="p-4 bg-white shadow rounded-lg mb-4">
-        <h2 className="text-lg font-bold">{note.title}</h2>
-        <p className="text-gray-700">{note.content}</p>
-        <p className="text-sm text-gray-500">{new Date(note.timestamp).toLocaleString()}</p>
-        <div className="flex justify-end space-x-2 mt-2">
-          <button 
-            onClick={() => onEdit(note)} 
-            className="text-blue-600 hover:text-blue-800 transition">
-            Edit
-          </button>
-          <button 
-            onClick={() => onDelete(note.id)} 
-            className="text-red-600 hover:text-red-800 transition">
-            Delete
-          </button>
-        </div>
+const NoteItem: React.FC<NoteItemProps> = ({ note, onDelete, onView }) => {
+  const formattedDate = new Date(note.timestamp).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
+
+  return (
+    <div className="p-4 bg-white rounded-lg shadow-md mb-4">
+      <h3 className="text-lg font-bold">{note.title}</h3>
+      <p className="text-gray-600">{note.content}</p>
+      <p className="text-sm text-gray-500 mt-2">{formattedDate}</p>
+      <div className="flex justify-end mt-4">
+        <button
+          onClick={onView}
+          className="text-blue-500 hover:underline mr-4"
+        >
+          View
+        </button>
+        <button
+          onClick={onDelete}
+          className="text-red-500 hover:underline"
+        >
+          Delete
+        </button>
       </div>
-    )
-  }
-  
-  export default NoteItem
+    </div>
+  );
+};
+
+export default NoteItem;

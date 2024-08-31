@@ -1,44 +1,45 @@
-import React, { createContext, useContext, useState } from 'react'
+"use client";
 
-interface Notification {
-  type: 'success' | 'error' | 'info'
-  message: string
-}
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+import { Notification } from '../types';
 
 interface NotificationContextType {
-  notifications: Notification[]
-  addNotification: (notification: Notification) => void
-  removeNotification: (index: number) => void
+  notifications: Notification[];
+  notify: (message: string, type: 'success' | 'error' | 'info') => void;
+  removeNotification: (index: number) => void;
 }
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined)
+const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
 
 export const useNotification = () => {
-  const context = useContext(NotificationContext)
+  const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error('useNotification must be used within a NotificationProvider')
+    throw new Error('useNotification must be used within a NotificationProvider');
   }
-  return context
-}
+  return context;
+};
 
+export const NotificationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
-export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [notifications, setNotifications] = useState<Notification[]>([])
+  const notify = (message: string, type: 'success' | 'error' | 'info') => {
+    const notification: Notification = { message, type };
+    setNotifications([...notifications, notification]);
 
-  const addNotification = (notification: Notification) => {
-    setNotifications([...notifications, notification])
     setTimeout(() => {
-      removeNotification(0)
-    }, 3000)
-  }
+      removeNotification(0);
+    }, 3000);
+  };
 
   const removeNotification = (index: number) => {
-    setNotifications(notifications.filter((_, i) => i !== index))
-  }
+    setNotifications((prevNotifications) =>
+      prevNotifications.filter((_, i) => i !== index)
+    );
+  };
 
   return (
-    <NotificationContext.Provider value={{ notifications, addNotification, removeNotification }}>
+    <NotificationContext.Provider value={{ notifications, notify, removeNotification }}>
       {children}
     </NotificationContext.Provider>
-  )
-}
+  );
+};

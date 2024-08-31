@@ -1,62 +1,71 @@
-import { NoteFormProps } from '@/types'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react';
+import { Note, NoteFormProps } from '@/types';
 
-const NoteForm: React.FC<NoteFormProps> = ({ initialData, onSubmit, onCancel }) => {
-    const [title, setTitle] = useState(initialData?.title || '')
-    const [content, setContent] = useState(initialData?.content || '')
-  
-    const handleSubmit = (e: React.FormEvent) => {
-      e.preventDefault()
-      if (!title || !content) return
-      onSubmit({ title, content })
-      setTitle('')
-      setContent('')
+
+
+const NoteForm: React.FC<NoteFormProps> = ({ onSubmit, onCancel, initialData }) => {
+  const [title, setTitle] = useState(initialData?.title || '');
+  const [content, setContent] = useState(initialData?.content || '');
+  const [timestamp, setTimestamp] = useState<string>(
+    initialData?.timestamp ? new Date(initialData.timestamp).toISOString().substring(0, 10) : ''
+  );
+
+  const handleSubmit = () => {
+    if (!title || !content || !timestamp) {
+      alert('All fields are required!');
+      return;
     }
-  
-    useEffect(() => {
-      if (initialData) {
-        setTitle(initialData.title)
-        setContent(initialData.content)
-      }
-    }, [initialData])
-  
-    return (
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded-lg shadow-md space-y-4 max-w-lg mx-auto animate-fadeIn">
-        <div>
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="title">Title</label>
-          <input
-            type="text"
-            id="title"
-            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="content">Content</label>
-          <textarea
-            id="content"
-            className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            rows={5}
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          ></textarea>
-        </div>
-        <div className="flex justify-end space-x-4">
-          <button 
-            type="button" 
-            onClick={onCancel} 
-            className="bg-gray-400 text-white p-2 rounded-lg hover:bg-gray-500 transition">
-            Cancel
-          </button>
-          <button 
-            type="submit" 
-            className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-700 transition">
-            Save
-          </button>
-        </div>
-      </form>
-    )
-  }
-  
-  export default NoteForm
+
+    const noteData: Omit<Note, 'id'> = {
+      title,
+      content,
+      timestamp: new Date(timestamp),
+    };
+
+    onSubmit(noteData);
+  };
+
+  return (
+    <div className="p-4 bg-white rounded-lg shadow-md">
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Title</label>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Content</label>
+        <textarea
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          required
+        />
+      </div>
+      <div className="mb-4">
+        <label className="block text-sm font-medium text-gray-700">Timestamp</label>
+        <input
+          type="date"
+          value={timestamp}
+          onChange={(e) => setTimestamp(e.target.value)}
+          className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
+          required
+        />
+      </div>
+      <div className="flex justify-end">
+        <button onClick={onCancel} className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg mr-2">
+          Cancel
+        </button>
+        <button onClick={handleSubmit} className="bg-primary text-white px-4 py-2 rounded-lg">
+          Save
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export default NoteForm;
