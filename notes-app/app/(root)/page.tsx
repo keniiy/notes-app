@@ -4,11 +4,13 @@ import Hero from '../../components/ui/Hero'
 import FeatureSection from '../../components/ui/FeatureSection'
 import Footer from '../../components/ui/Footer'
 import Notification from '../../components/ui/Notification'
+import NoteItem from '../../components/notes/NoteItem'
+import NoteForm from '../../components/notes/NoteForm'
+import Loader from '../../components/ui/Loader'
+import EmptyState from '../../components/ui/EmptyState'
 import { NotificationProvider } from '../../providers/NotificationProvider'
 import { useNotes } from '../../lib/hooks/useNotes'
 import { Note } from '@/types'
-import NoteForm from '@/components/notes/NoteForm'
-import NoteItem from '@/components/notes/NoteItem'
 
 const HomePage: React.FC = () => {
   const { notes, isLoading, error, addNote, editNote, removeNote } = useNotes()
