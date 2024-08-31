@@ -57,9 +57,9 @@ npm run dev
 
 ### 5. Using the Feature
 
-Add a Note: Click on the “Add Note” button, fill in the title, content, and timestamp, then save.
-View Notes: The notes will be displayed in a list format. You can view individual notes by clicking “View”.
-Delete Notes: Click “Delete” to remove a note.
-Pagination: Use the “Previous” and “Next” buttons to navigate through the notes.
+	•	Add a Note: Click on the “Add Note” button, fill in the title, content, and timestamp, then click “Save” to add the note.
+	•	View Notes: The notes are displayed in a list format. You can view individual notes by clicking the “View” button.
+	•	Delete Notes: To remove a note, click the “Delete” button.
+	•	Pagination: Navigate through the list of notes using the “Previous” and “Next” buttons.
 
 ### Happy coding ;)
