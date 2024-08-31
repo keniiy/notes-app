@@ -1,3 +1,4 @@
+// components/ui/Notification.tsx
 import React from 'react'
 import { useNotification } from '../../providers/NotificationProvider'
 
